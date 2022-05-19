@@ -1,0 +1,11 @@
+<div class="month-title" fxLayoutAlign="center center">
+    <span>{{mName.toUpperCase()}}</span>
+</div>
+
+<div fxLayout="row" class="day-outer">
+    <div class="day heading" fxLayoutAlign="center center" *ngFor="let name of namesOfDays">{{name}}</div>
+</div>
+
+<ng-container *ngFor="let week of month; trackBy:trackByFn">
+    <app-week [week]="week" (dateSelected)="onDateSelected($event)"></app-week>
+</ng-container>

@@ -1,0 +1,91 @@
+<div class="calendar-wrapper" [ngClass]="{'vertical': verticalCalendar, 'horizontal': !verticalCalendar }">
+    <div class="heading-wrapper">
+        <div class="top-heading" *ngIf="verticalCalendar" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon (click)="closeCalendar()">arrow_back</mat-icon>
+            <span>{{options?.topHeading}}</span>
+        </div>
+        <div class="options-wrapper" fxLayout="row" fxLayoutAlign="start center">
+            
+            <ng-container *ngIf="verticalCalendar else horizontalCalendar">
+                <div class="date-outer" fxLayout="column" [class.selected]="options?.firstOption?.selected" (click)="highlightFirstTab()">
+                    <span class="text">
+                        {{options?.firstOption?.text}}
+                    </span>
+                    <span class="date" fxLayout="row" fxLayoutAlign="start center">
+                        <ng-container *ngIf="!startDate else showStartDate">
+                            Select Date
+                        </ng-container>
+                        <ng-template #showStartDate>
+                            <span class="d">{{startDate?.mDate?.format('DD')}}</span>
+                            <span fxLayout="column">
+                                <span class="mmyy">{{startDate?.mDate?.format('MMMM, YYYY')}}</span>
+                                <span class="txt">{{startDate?.mDate?.format('dddd')}}</span>
+                            </span>
+                        </ng-template>
+                    </span>
+                </div>
+                <div class="date-outer" fxLayout="column" [class.selected]="options?.secondOption?.selected" (click)="highlightSecondTab()" *ngIf="!options?.selectSingleDate">
+                    <span class="text">
+                        {{options?.secondOption?.text}}
+                    </span>
+                    <span class="date" fxLayout="row" fxLayoutAlign="start center">
+                        <ng-container *ngIf="!endDate else showEndDate">
+                            Select Date
+                        </ng-container>
+                        <ng-template #showEndDate>
+                            <span class="d">{{endDate?.mDate?.format('DD')}}</span>
+                            <span fxLayout="column">
+                                <span class="mmyy">{{endDate?.mDate?.format('MMMM, YYYY')}}</span>
+                                <span class="txt">{{endDate?.mDate?.format('dddd')}}</span>
+                            </span>
+                        </ng-template>
+                    </span>
+                    <mat-icon class="close" (click)="showOptionEndDate()">cancel</mat-icon>
+                </div>
+            </ng-container>
+            
+            <ng-template #horizontalCalendar>
+                <div class="date-outer" fxLayout="column" [class.selected]="options?.firstOption?.selected" (click)="highlightFirstTab()">
+                    <span class="text">
+                        {{options?.firstOption?.text}}
+                    </span>
+                    <span class="date">
+                        {{!startDate? 'Select Date': startDate?.mDate?.format('MMMM DD, YYYY')}}
+                    </span>
+                </div>
+                <div class="date-outer" fxLayout="column" [class.selected]="options?.secondOption?.selected" (click)="highlightSecondTab()" *ngIf="!options?.selectSingleDate">
+                    <span class="text">
+                        {{options?.secondOption?.text}}
+                    </span>
+                    <span class="date">
+                        {{!endDate? 'Select Date': endDate?.mDate?.format('MMMM DD, YYYY')}}
+                    </span>
+                    <mat-icon class="close" (click)="showOptionEndDate()">cancel</mat-icon>
+                </div>        
+            </ng-template>
+
+            <div class="date-outer" fxLayout="column" *ngIf="options?.selectSingleDate" (click)="showOptionEndDate()">
+                <div class="offer-text" fxLayoutAlign="start center">
+                    {{options?.offerText}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="months-wrapper" fxLayout="row">
+        <ng-container *ngIf="!verticalCalendar">
+            <mat-icon class="action left" [class.disabled]="startLimit == 0" (click)="prevMonth()">arrow_back</mat-icon>
+            <mat-icon class="action right" [class.disabled]="endLimit-1 == monthsLimit" (click)="nextMonth()">arrow_forward</mat-icon>
+        </ng-container>
+        <ng-container *ngFor="let month of (months | slice: startLimit: endLimit); trackBy:trackByFn; let i = index">
+            <app-month class="month-outer" [month]="month" [mName]="yymmAddedText[startLimit+i]" (dateSelected)="onDateSelected($event)"></app-month>
+            
+            <div class="holidays" *ngIf="verticalCalendar && holidaysForVerticalCalendar[i]">
+                <ul fxLayout="row">
+                    <li fxLayout="row" *ngFor="let h of holidaysForVerticalCalendar[i]"><span class="no">{{h.date}}</span> <span class="txt">{{h.holiday}}</span></li>
+                </ul>
+            </div>
+        </ng-container>
+    </div>
+    <button mat-flat-button class="btn-done" *ngIf="verticalCalendar" (click)="closeCalendar(true)">DONE</button>
+</div>
+<div class="overlay" (click)="overlayClicked()"></div>
