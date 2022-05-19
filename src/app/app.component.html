@@ -1,7 +1,0 @@
-<br>
-<div>
-    <span><input type="checkbox" [(ngModel)]="verticalCalendar">view Vertical Full screen calendar (for mobile)</span>
-    <button (click)="openCalendar()">View calendar</button>
-</div>
-<br>
-<lib-calendar *ngIf="showCalendar" [verticalCalendar]="verticalCalendar" (close)="closeCalendar($event)"></lib-calendar>
