@@ -1,5 +1,5 @@
 <div fxLayout="row" class="week-outer">
-    <div *ngFor="let day of week; trackBy:trackByFn" (click)="selectDate(day)" class="day" [ngClass]="{'today': day.today, 'selected': day.selected,'inbetween': day.inbetween, 'hidden': day.hidden, 'inactive': day.inactive, 'weekend': day.weekend}" fxLayout="column" fxLayoutAlign="center center">
+    <div *ngFor="let day of week; trackBy:trackByFn" (click)="selectDate(day)" class="day" [ngClass]="{'today': day.today && !day.hidden, 'selected': day.selected,'inbetween': day.inbetween, 'hidden': day.hidden, 'inactive': day.inactive, 'weekend': day.weekend}" fxLayout="column" fxLayoutAlign="center center">
         <span class="date">
             {{day.mDate.date()}}
         </span>
