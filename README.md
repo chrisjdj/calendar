@@ -1,5 +1,5 @@
-# Responsive Calendar - Moment & Angular
+# Responsive Calendar/Datepicker - Moment & Angular
 
-Responsive calendar using moment.js and Angular
+Responsive calendar/datepicker using moment.js and Angular
 
 Demo: https://chrisjollydj.github.io/calendar
